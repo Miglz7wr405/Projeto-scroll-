@@ -37,6 +37,19 @@ RESEND_API_KEY=
 - `SUPABASE_SERVICE_ROLE_KEY`: mesma página, chave `service_role`. **Nunca** expor no frontend — usada só em código de servidor/edge functions.
 - `RESEND_API_KEY`: painel da Resend → **API Keys**. Necessária a partir da Fase 9 (notificações).
 
+## Aplicar as migrations no Supabase
+
+As migrations em `supabase/migrations/` foram validadas localmente (Postgres 16, com schema `auth` simulado) — RLS testado com dois clientes confirmando isolamento de dados, e admin confirmando acesso total.
+
+Para aplicar no seu projeto Supabase real, com a [CLI do Supabase](https://supabase.com/docs/guides/cli) instalada:
+
+```bash
+supabase link --project-ref <seu-project-ref>
+supabase db push
+```
+
+Ou cole o conteúdo de cada ficheiro, em ordem (`0001` → `0008`), no **SQL Editor** do painel do Supabase.
+
 ## Tornar uma conta administradora
 
 (Detalhado quando a Fase 1/7 estiver concluída — vai envolver atualizar `role` para `admin` na tabela `profiles` via SQL editor do Supabase ou Service Role.)
@@ -44,7 +57,7 @@ RESEND_API_KEY=
 ## Estado do projeto
 
 - [x] Fase 0 — Setup (Next.js, Tailwind, shadcn/ui, cliente Supabase, `.env.example`)
-- [ ] Fase 1 — Dados (migrations, RLS)
+- [x] Fase 1 — Dados (migrations, RLS)
 - [ ] Fase 2 — Público (`/`, `/sobre`)
 - [ ] Fase 3 — Auth cliente
 - [ ] Fase 4 — Pedido

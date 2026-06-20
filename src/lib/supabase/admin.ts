@@ -1,5 +1,6 @@
 import "server-only";
 import { createClient as createSupabaseClient } from "@supabase/supabase-js";
+import type { Database } from "@/types/database";
 
 /**
  * Cliente com SUPABASE_SERVICE_ROLE_KEY — ignora RLS.
@@ -7,7 +8,7 @@ import { createClient as createSupabaseClient } from "@supabase/supabase-js";
  * promover utilizador a admin). Nunca importar em componentes de cliente.
  */
 export function createAdminClient() {
-  return createSupabaseClient(
+  return createSupabaseClient<Database>(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.SUPABASE_SERVICE_ROLE_KEY!,
     {
