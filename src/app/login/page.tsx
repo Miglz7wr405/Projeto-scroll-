@@ -30,20 +30,24 @@ export default function LoginPage() {
     setErro(null);
     setCarregando(true);
 
-    const supabase = createClient();
-    const { error } = await supabase.auth.signInWithPassword({
-      email: phoneToSyntheticEmail(dados.phone),
-      password: dados.password,
-    });
+    try {
+      const supabase = createClient();
+      const { error } = await supabase.auth.signInWithPassword({
+        email: phoneToSyntheticEmail(dados.phone),
+        password: dados.password,
+      });
 
-    setCarregando(false);
+      if (error) {
+        setErro("Telefone ou senha incorretos.");
+        return;
+      }
 
-    if (error) {
-      setErro("Telefone ou senha incorretos.");
-      return;
+      router.push("/painel");
+    } catch {
+      setErro("Não foi possível ligar ao servidor. Tente novamente em breve.");
+    } finally {
+      setCarregando(false);
     }
-
-    router.push("/painel");
   }
 
   return (

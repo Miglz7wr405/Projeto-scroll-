@@ -34,30 +34,34 @@ export default function CadastroPage() {
     setErro(null);
     setCarregando(true);
 
-    const supabase = createClient();
-    const { error } = await supabase.auth.signUp({
-      email: phoneToSyntheticEmail(dados.phone),
-      password: dados.password,
-      options: {
-        data: {
-          full_name: dados.fullName,
-          phone: dados.phone,
+    try {
+      const supabase = createClient();
+      const { error } = await supabase.auth.signUp({
+        email: phoneToSyntheticEmail(dados.phone),
+        password: dados.password,
+        options: {
+          data: {
+            full_name: dados.fullName,
+            phone: dados.phone,
+          },
         },
-      },
-    });
+      });
 
-    setCarregando(false);
-
-    if (error) {
-      if (error.message.toLowerCase().includes("already registered")) {
-        setErro("Já existe uma conta com este número de telefone.");
-      } else {
-        setErro("Não foi possível criar a sua conta. Tente novamente.");
+      if (error) {
+        if (error.message.toLowerCase().includes("already registered")) {
+          setErro("Já existe uma conta com este número de telefone.");
+        } else {
+          setErro("Não foi possível criar a sua conta. Tente novamente.");
+        }
+        return;
       }
-      return;
-    }
 
-    router.push("/painel");
+      router.push("/painel");
+    } catch {
+      setErro("Não foi possível ligar ao servidor. Tente novamente em breve.");
+    } finally {
+      setCarregando(false);
+    }
   }
 
   return (
