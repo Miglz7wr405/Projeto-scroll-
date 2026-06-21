@@ -59,7 +59,7 @@ Ou cole o conteúdo de cada ficheiro, em ordem (`0001` → `0008`), no **SQL Edi
 - [x] Fase 0 — Setup (Next.js, Tailwind, shadcn/ui, cliente Supabase, `.env.example`)
 - [x] Fase 1 — Dados (migrations, RLS)
 - [x] Fase 2 — Público (`/`, `/sobre`)
-- [ ] Fase 3 — Auth cliente
+- [x] Fase 3 — Auth cliente
 - [ ] Fase 4 — Pedido
 - [ ] Fase 5 — Documentos
 - [ ] Fase 6 — Envio + painel
