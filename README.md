@@ -50,6 +50,45 @@ supabase db push
 
 Ou cole o conteúdo de cada ficheiro, em ordem (`0001` → `0008`), no **SQL Editor** do painel do Supabase.
 
+## Botões de resposta rápida do WhatsApp (gratuito, via Meta Cloud API)
+
+Em vez de um BSP pago (Twilio, etc.), as Edge Functions usam diretamente a
+**WhatsApp Cloud API da Meta**, que é gratuita para o número de teste e para
+o volume inicial de conversas.
+
+1. Crie uma conta em [developers.facebook.com](https://developers.facebook.com/), crie um app do tipo **Business** e adicione o produto **WhatsApp**.
+2. No painel do produto WhatsApp → **API Setup**, copie o **Temporary access token** (ou gere um permanente com um System User) e o **Phone number ID** do número de teste fornecido gratuitamente pela Meta.
+3. Defina um `WHATSAPP_VERIFY_TOKEN` à sua escolha (qualquer string secreta).
+4. Configure os secrets nas Edge Functions do Supabase:
+   ```bash
+   supabase secrets set WHATSAPP_TOKEN=<token> WHATSAPP_PHONE_NUMBER_ID=<id> WHATSAPP_VERIFY_TOKEN=<sua-string>
+   ```
+5. Faça deploy das funções:
+   ```bash
+   supabase functions deploy whatsapp-quick-reply
+   supabase functions deploy whatsapp-webhook --no-verify-jwt
+   ```
+6. No painel do app Meta → WhatsApp → **Configuration**, registe a **Callback URL** como a URL pública de `whatsapp-webhook` e o **Verify token** igual ao `WHATSAPP_VERIFY_TOKEN`. Subscreva o campo `messages`.
+7. Para enviar uma mensagem com até 3 botões de resposta rápida, chame a função:
+   ```bash
+   curl -X POST "<SUPABASE_URL>/functions/v1/whatsapp-quick-reply" \
+     -H "Authorization: Bearer <SUPABASE_ANON_KEY>" \
+     -H "Content-Type: application/json" \
+     -d '{
+       "clientId": "<uuid-do-cliente>",
+       "applicationId": null,
+       "phone": "244912345678",
+       "message": "O seu pedido foi aprovado. O que deseja fazer?",
+       "buttons": [
+         { "id": "ver_pedido", "title": "Ver pedido" },
+         { "id": "falar_atendente", "title": "Falar com atendente" }
+       ]
+     }'
+   ```
+   O envio é registado em `notifications` (`channel = 'whatsapp'`); quando o cliente toca num botão, o webhook grava a resposta em `whatsapp_button_replies`.
+
+> Limite da Meta: até 3 botões por mensagem, títulos com no máximo 20 caracteres. Fora da janela gratuita de 24h de uma conversa iniciada pelo cliente, o envio de mensagens iniciadas pela empresa pode exigir um *template* aprovado — para respostas a uma conversa em curso (ex.: depois do cliente escrever), os botões funcionam sem custo.
+
 ## Tornar uma conta administradora
 
 (Detalhado quando a Fase 1/7 estiver concluída — vai envolver atualizar `role` para `admin` na tabela `profiles` via SQL editor do Supabase ou Service Role.)

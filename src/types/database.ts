@@ -77,6 +77,16 @@ export type NotificationRecord = {
   created_at: string;
 };
 
+export type WhatsAppButtonReply = {
+  id: string;
+  client_id: string | null;
+  phone: string;
+  button_id: string;
+  button_title: string;
+  wa_message_id: string | null;
+  created_at: string;
+};
+
 export type Database = {
   public: {
     Tables: {
@@ -111,6 +121,12 @@ export type Database = {
         Row: NotificationRecord;
         Insert: Omit<NotificationRecord, "id" | "created_at">;
         Update: Partial<NotificationRecord>;
+        Relationships: [];
+      };
+      whatsapp_button_replies: {
+        Row: WhatsAppButtonReply;
+        Insert: Omit<WhatsAppButtonReply, "id" | "created_at">;
+        Update: Partial<WhatsAppButtonReply>;
         Relationships: [];
       };
     };
