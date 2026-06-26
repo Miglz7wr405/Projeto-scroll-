@@ -89,6 +89,18 @@ o volume inicial de conversas.
 
 > Limite da Meta: até 3 botões por mensagem, títulos com no máximo 20 caracteres. Fora da janela gratuita de 24h de uma conversa iniciada pelo cliente, o envio de mensagens iniciadas pela empresa pode exigir um *template* aprovado — para respostas a uma conversa em curso (ex.: depois do cliente escrever), os botões funcionam sem custo.
 
+### "Ice breakers" — sugestões antes do cliente escrever
+
+Os botões que aparecem **antes** de qualquer mensagem (ex.: "Quero marcar uma chamada", "Tenho uma reunião marcada"...) são uma configuração separada, feita uma única vez no número, e só existem no WhatsApp Business Platform (Cloud API) — não há como ativá-los no app comum do WhatsApp Business sem o cadastro gratuito na Meta acima.
+
+Depois de ter `WHATSAPP_TOKEN` e `WHATSAPP_PHONE_NUMBER_ID`, rode:
+
+```bash
+WHATSAPP_TOKEN=<token> WHATSAPP_PHONE_NUMBER_ID=<id> ./scripts/configure-whatsapp-ice-breakers.sh
+```
+
+Isso ativa a mensagem de boas-vindas e define os 4 atalhos. Para mudar os textos, edite o array `prompts` no script (máximo 4 itens, 80 caracteres cada).
+
 ## Tornar uma conta administradora
 
 (Detalhado quando a Fase 1/7 estiver concluída — vai envolver atualizar `role` para `admin` na tabela `profiles` via SQL editor do Supabase ou Service Role.)
